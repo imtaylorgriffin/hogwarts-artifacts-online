@@ -1,6 +1,7 @@
 package edu.tcu.cs.hogwartsartifactsonline.artifact;
 
 import edu.tcu.cs.hogwartsartifactsonline.artifact.utils.IdWorker;
+import edu.tcu.cs.hogwartsartifactsonline.system.exception.ObjectNotFoundException;
 import edu.tcu.cs.hogwartsartifactsonline.wizard.Wizard;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -119,7 +120,7 @@ class ArtifactServiceTest {
 
         //then
         assertThat(thrown)
-                .isInstanceOf(ArtifactNotFoundExeception.class)
+                .isInstanceOf(ObjectNotFoundException.class)
                 .hasMessage("Could not find artifact with ID: 1250808601744904192 :(");
         verify(artifactRepository,times(1)).findById("1250808601744904192");
 
@@ -180,7 +181,7 @@ class ArtifactServiceTest {
         oldArtifact.setImgUrl("ImgUrl");
 
         Artifact update = new Artifact();
-        update.setId("1250808601744904191");
+        //update.setId("1250808601744904191");
         update.setName("Deluminator");
         update.setDescription("A new description");
         update.setImgUrl("ImgUrl");
@@ -196,7 +197,7 @@ class ArtifactServiceTest {
 
 
         //then
-        assertThat(updatedArtifact.getId()).isEqualTo(update.getId());
+        assertThat(updatedArtifact.getId()).isEqualTo("1250808601744904191");
         assertThat(updatedArtifact.getDescription()).isEqualTo(update.getDescription());
         verify(artifactRepository, times(1)).findById("1250808601744904191");
         verify(artifactRepository, times(1)).save(oldArtifact);
@@ -221,7 +222,7 @@ class ArtifactServiceTest {
 
 
         // when
-        assertThrows(ArtifactNotFoundExeception.class, () ->{
+        assertThrows(ObjectNotFoundException.class, () ->{
             artifactService.update("1250808601744904191", update);
         });
 
@@ -262,7 +263,7 @@ class ArtifactServiceTest {
         given(artifactRepository.findById("1250808601744904191")).willReturn(Optional.empty());
 
         //when
-        assertThrows(ArtifactNotFoundExeception.class, () ->{
+        assertThrows(ObjectNotFoundException.class, () ->{
             artifactService.delete("1250808601744904191");
 
         });
