@@ -61,4 +61,6 @@ public class Artifact implements Serializable {
     public void setOwner(Wizard owner) {
         this.owner = owner;
     }
+
+
 }
